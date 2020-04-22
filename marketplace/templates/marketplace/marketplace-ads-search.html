@@ -1,0 +1,36 @@
+{% if ads.count == 0 %}
+<h5>No Results for search <i>'{{query}}'</i></h5>
+<hr>
+{% else %}
+	<h5>Result for search <i>'{{query}}'</i></h5>
+	<hr>
+	<div class="row">
+		{% for ad in ads %}
+		<div class = "col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+			<div class = "card shadow p-4 mb-6" style="height:auto;">
+				<div class = "card-body">
+					<div class="row">
+						<div class = "col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+							<center>
+								<img src = "{{ad.image.url}}" style="height: 150px ;max-width: 100%;">
+							</center>
+						</div>
+						<div class = "col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+							<h5 class = "card-title">{{ad.title}}</h5>
+							{% if ad.sold == True %}
+								<span class="badge badge-success">Sold</span>
+							{% endif %}
+							<h3 class = "card-text">{{ad.price}} THB</h3>
+							<p class = "card-text">{{ad.product}}<br>
+							<span class="badge badge-primary">{{ad.tags}}</span></p>
+							
+							<a href="{% url 'marketplace:marketplace-details' ad.slug %}" class = "btn btn-secondary btn-sm mt-1 mb-1">Details</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+		</div>
+		{% endfor %}
+		</div>
+{% endif %}

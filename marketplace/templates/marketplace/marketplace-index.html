@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<div class = "container-fluid">
+		<br>
+		<div class = "row">
+			<div class = "col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
+				<div class = "card shadow p-3 mb-5">
+					<div class = "card-body">
+						<center>
+							<img src = "{{user.profile.image.url}}" style="max-width: 60%;height: auto;" class="rounded-circle img-responsive">
+						</center>
+						<br><br>
+						<center><h4>{{user}}</h4>
+						<small>
+							{{user.first_name}} {{user.last_name}}
+							<br>{{user.email}}
+						</small>
+						<p>
+							<br>{{user.profile.contact}}
+							
+						</p>
+						<a href="{% url 'marketplace:marketplace-user' request.user %}">Your Ads: {{ads_count}}</a>
+						<br><br><a href="{% url 'marketplace:marketplace-sell' %}" class="btn btn-success btn-sm mt-1 mb-1">Sell</a>
+						<a href="{% url 'accounts:accounts-edit' %}" class="btn btn-info btn-sm mt-1 mb-1" style="float: center;">Edit Profile</a>
+						<a href="{% url 'accounts:accounts-logout' %}" class="btn btn-danger btn-sm mt-1 mb-1" style="float: center;">Logout</a>
+						</center>
+					</div>
+				</div>
+			</div>
+			<div class = "col-xl-10 col-lg-10 col-md-8 col-sm-12 col-12">
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn btn-primary text-white btn-sm mt-1 mb-1" name="All" href="javascript:AdFilter('All')" style="float: center; background-color: #59698d;" >All</a>
+						<a class="btn btn-primary text-white btn-sm mt-1 mb-1" name="Other Electronics" href="javascript:AdFilter('Other Electronics')" style="float: center;" >Other Electronics</a>
+						<a class="btn btn-warning text-white btn-sm mt-1 mb-1" name="Laptop" href="javascript:AdFilter('Laptop')" style="float: center;">Laptop</a>
+						<a class="btn btn-secondary text-white btn-sm mt-1 mb-1" name="PC" href="javascript:AdFilter('PC')" style="float: center;">PC</a>
+						<a class="btn btn-info text-white btn-sm mt-1 mb-1" name="Tablets" href="javascript:AdFilter('Tablets')" style="float: center;">Tablets</a>
+						<a class="btn btn-success text-white btn-sm mt-1 mb-1" name="Mobiles" href="javascript:AdFilter('Mobiles')" style="float: center;">Mobiles</a>
+						<a class="btn btn-dark text-white btn-sm mt-1 mb-1" name="Clothes" href="javascript:AdFilter('Clothes')" style="float: center;">Clothes</a>
+						<a class="btn btn-danger text-white btn-sm mt-1 mb-1" name="Automotives" href="javascript:AdFilter('Automotives')" style="float: center;">Automotives</a>
+						<a class="btn btn-light text-white btn-sm mt-1 mb-1" name="Furniture" href="javascript:AdFilter('Furniture')" style="float: center;background-color: #f4511e;">Furniture</a>
+					</div>
+				</div>
+				<hr>
+				<div id="filterdump"></div>
+				<div id="searchRes"></div>
+				<div id="initAds">
+				<h5>All</h5>
+				<hr>
+				<div class="row">
+				{% for ad in ads %}
+				<div class = "col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+					<div class = "card shadow p-4 mb-6" style="height:auto;">
+						<div class = "card-body">
+							<div class="row">
+								<div class = "col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+									<center>
+										<img src = "{{ad.image.url}}" style="height: 150px ;max-width: 100%;">
+									</center>
+								</div>
+								<div class = "col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+									<h5 class = "card-title">{{ad.title}}</h5>
+									<h3 class = "card-text">{{ad.price}} THB</h3>
+									<p class = "card-text">{{ad.product}}<br>
+									<span class="badge badge-primary">{{ad.tags}}</span></p>
+									
+									<a href="{% url 'marketplace:marketplace-details' ad.slug %}" class = "btn btn-secondary btn-sm mt-1 mb-1">Details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+				</div>
+				{% endfor %}
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		function AdFilter(key){
+			var filter = key;
+			$.ajax({
+    			url:"{% url 'marketplace:marketplace-filters' %}",
+				data:{
+					'filter':filter
+				},
+				dataType:'html',
+				success: FilterSuccess
+    		});
+		}
+
+		function FilterSuccess(data,textStatus,jqXHR){
+			$("#initAds").css("display", "none");
+			$("#searchRes").css("display", "none");
+			$("#filterdump").css("display", "block");
+    		$('#filterdump').html(data);
+    	}
+
+    	$("#query").keyup(function () {
+      			var query=$(this).val();
+      			if(query.length >= 1 && query !="" && query != " "){
+	      			$.ajax({
+				        url: "{% url 'marketplace:marketplace-ads-search' %}",
+				        data: {
+				          'query': query
+				        },
+				        success: searchSuccess,
+				        dataType: 'html'
+	      			});
+      			}
+      			else if(query = null || query.length < 1 || query == "" || query == " "){
+      				$("#searchRes").css("display", "none");
+      				$("#initAds").css("display", "block");
+      				$("#filterdump").css("display", "none");
+      			}
+    		});
+
+    		function searchSuccess(data,textStatus,jqXHR)
+    		{
+    			$("#filterdump").css("display", "none");
+    		    $("#initAds").css("display", "none");
+    		    $("#searchRes").css("display", "block");
+    			$('#searchRes').html(data);
+    		}
+	</script>
+{% endblock %}
+

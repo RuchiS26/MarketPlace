@@ -1,0 +1,31 @@
+{% extends 'subBase.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class = "container" style="position: relative;margin-top: 15%;">
+		<div class="row justify-content-center">
+		<div class = "col-md-8">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-xs-4 col-lg-4 col-md-12 col-sm-12 col-12">
+							<center>
+								<img src="https://zenodo.org/api/files/00000000-0000-0000-0000-000000000000/asian-institute-of-technology/logo.png" width="200px" height="200px" class="img-responsive" alt="ait-logo">
+							</center>
+						</div>
+						<div class="col-xl-8 col-md-8 col-md-12 col-sm-12 col-12">
+							<form action="{% url 'accounts:accounts-login'%}" method="post" class = "form-group">
+								{% csrf_token %}
+								{{authForm|crispy}}
+								{% if request.GET.next %}
+								<input type="hidden" name="next" value="{{request.GET.next}}">
+								{% endif %}
+								<input type="submit" name="login" value="Login" class="btn btn-info btn-sm mt-1 mb-1">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+{% endblock %}

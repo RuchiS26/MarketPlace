@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="container">
+		<br>
+		<div class="card">
+			<div class="card-body"> 
+				<h1>Delete your product</h1>
+				<hr>
+				<p class="justify">Are you sure you want to delete ad <b>"{{ad.title}}"</b>? This cannot be undone.</p>
+				<hr>
+				<a href="{% url 'marketplace:marketplace-ad-delete' ad.slug %}" class="btn btn-danger btn-sm mt-1 mb-1">Delete</a>
+				<a href="{% url 'marketplace:marketplace-details' ad.slug %}" class="btn btn-info btn-sm mt-1 mb-1">Cancel</a>
+			</div>
+		</div>
+	</div>
+	<br>
+{% endblock %}

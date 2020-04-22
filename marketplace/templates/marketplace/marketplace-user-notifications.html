@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+</style>
+	<div class = "container-fluid">
+		<br>
+		<div class = "row">
+			<div class = "col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12 ">
+				<div class = "card shadow p-3 mb-5">
+					<div class = "card-body">
+						<center>
+							<img src = "{{user.profile.image.url}}" style="max-width: 60%;height: auto;" class="rounded-circle img-responsive">
+						</center>
+						<br><br>
+						<center><h4>{{user}}</h4>
+						<small>
+							{{user.first_name}} {{user.last_name}}
+							<br>{{user.email}}
+						</small>
+						<p>
+							<br>{{user.profile.contact}}
+							
+						</p>
+						{% if request.user == user %}
+						<a href="{% url 'marketplace:marketplace-user' request.user %}">Your Ads: {{ads_count}}</a>
+						<br><br><a href="{% url 'marketplace:marketplace-sell' %}" class="btn btn-success btn-sm mt-1 mb-1">Sell</a>
+						<a href="{% url 'accounts:accounts-edit' %}" class="btn btn-info btn-sm mt-1 mb-1" style="float: center;">Edit Profile</a>
+						<a href="{% url 'accounts:accounts-logout' %}" class="btn btn-danger btn-sm mt-1 mb-1" style="float: center;">Logout</a>
+						</center>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class = "col-xl-10 col-lg-10 col-md-8 col-sm-12 col-12">
+				<h1>{{user}}'s Notifications</h1>
+				<hr>
+				<div class="row">
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+						<b>Buyer</b>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+						<b>Product</b>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+						<b>Date</b>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					{% for notification in notifications %}
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+							<a href="{% url 'marketplace:marketplace-user' notification.buyer %}">{{notification.buyer}}
+						</div>
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+							<a href="{% url 'marketplace:marketplace-details' notification.product.slug %}">{{notification.product}}</a>
+						</div>
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+							{{notification.date}}
+						</div>
+						<hr>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

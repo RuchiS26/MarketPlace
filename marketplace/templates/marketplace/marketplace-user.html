@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+</style>
+	<div class = "container-fluid">
+		<br>
+		<div class = "row">
+			<div class = "col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12 ">
+				<div class = "card shadow p-3 mb-5">
+					<div class = "card-body">
+						<center>
+							<img src = "{{user.profile.image.url}}" style="max-width: 60%;height: auto;" class="rounded-circle img-responsive">
+						</center>
+						<br><br>
+						<center><h4>{{user}}</h4>
+						<small>
+							{{user.first_name}} {{user.last_name}}
+							<br>{{user.email}}
+						</small>
+						<p>
+							<br>{{user.profile.contact}}
+							
+						</p>
+						{% if request.user == user %}
+						<a href="{% url 'marketplace:marketplace-user' request.user %}">Your Ads: {{ads_count}}</a>
+						<br><br><a href="{% url 'marketplace:marketplace-sell' %}" class="btn btn-success btn-sm mt-1 mb-1">Sell</a>
+						<a href="{% url 'accounts:accounts-edit' %}" class="btn btn-info btn-sm mt-1 mb-1" style="float: center;">Edit Profile</a>
+						<a href="{% url 'accounts:accounts-logout' %}" class="btn btn-danger btn-sm mt-1 mb-1" style="float: center;">Logout</a>
+						</center>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class = "col-xl-10 col-lg-10 col-md-8 col-sm-12 col-12">
+				<h1>{{user}}'s Ads</h1>
+				<hr>
+				<div class="row">	
+				{% for ad in ads %}
+				<div class = "col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+					<div class = "card shadow p-4 mb-6" style="height:auto;">
+						<div class = "card-body">
+							<div class="row">
+								<div class = "col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+									<center>
+										<img src = "{{ad.image.url}}" style="height: 150px ;max-width: 100%;">
+									</center>
+								</div>
+								<div class = "col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+									<h5 class = "card-title">
+										{{ad.title}}									
+										{% if ad.sold == True %}
+											<span class="badge badge-success">Sold</span>
+										{% endif %}
+									</h5>
+
+									<h3 class = "card-text">{{ad.price}} THB</h3>
+									<p class = "card-text">{{ad.product}}<br>
+									<span class="badge badge-primary">{{ad.tags}}</span></p>
+									
+									<a href="{% url 'marketplace:marketplace-details' ad.slug %}" class = "btn btn-secondary btn-sm mt-1 mb-1">Details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+				</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
