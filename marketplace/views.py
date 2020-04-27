@@ -23,7 +23,7 @@ def marketplace_filters(request):
 	elif(query == 'Other Electronics'):
 		filter_type = query
 		ads = Advert.objects.filter(sold = False).filter(tags = filter_type).order_by('date_posted')
-	elif(query == 'Laptop'):
+	elif(query == 'Laptops'):
 		filter_type = query
 		ads = Advert.objects.filter(sold = False).filter(tags = filter_type).order_by('date_posted')
 	elif(query == 'PC'):
@@ -52,7 +52,7 @@ def marketplace_filters(request):
 @login_required(login_url = 'accounts:accounts-login')
 def marketplace_ads_search(request):
 	query = request.GET.get('query',None)
-	ads = Advert.objects.filter(Q(title__contains=query) | Q(product__contains=query))
+	ads = Advert.objects.filter(Q(title__icontains=query) | Q(product__icontains=query) | Q(tags__icontains=query))
 
 	return render(request,'marketplace/marketplace-ads-search.html',{'query':query,'ads':ads})
 
@@ -162,7 +162,7 @@ def marketplace_ad_contact_seller(request,slug):
 	else:
 		seller = User.objects.get(username = ad.user)
 		user = request.user
-		ads = Advert.objects.filter(user = user)
+		ads = Advert.objects.filter(user = seller)
 		Notify.objects.create(user = seller, buyer = user, product = ad)
 		messages.success(request,f'Seller Notified about your interest!')
 		return render(request,'marketplace/marketplace-user.html',{'user':seller,'ads':ads})

@@ -34,7 +34,7 @@
 					<div class="col-md-12">
 						<a class="btn btn-primary text-white btn-sm mt-1 mb-1" name="All" href="javascript:AdFilter('All')" style="float: center; background-color: #59698d;" >All</a>
 						<a class="btn btn-primary text-white btn-sm mt-1 mb-1" name="Other Electronics" href="javascript:AdFilter('Other Electronics')" style="float: center;" >Other Electronics</a>
-						<a class="btn btn-warning text-white btn-sm mt-1 mb-1" name="Laptop" href="javascript:AdFilter('Laptop')" style="float: center;">Laptop</a>
+						<a class="btn btn-warning text-white btn-sm mt-1 mb-1" name="Laptop" href="javascript:AdFilter('Laptops')" style="float: center;">Laptop</a>
 						<a class="btn btn-secondary text-white btn-sm mt-1 mb-1" name="PC" href="javascript:AdFilter('PC')" style="float: center;">PC</a>
 						<a class="btn btn-info text-white btn-sm mt-1 mb-1" name="Tablets" href="javascript:AdFilter('Tablets')" style="float: center;">Tablets</a>
 						<a class="btn btn-success text-white btn-sm mt-1 mb-1" name="Mobiles" href="javascript:AdFilter('Mobiles')" style="float: center;">Mobiles</a>
@@ -64,8 +64,23 @@
 									<h5 class = "card-title">{{ad.title}}</h5>
 									<h3 class = "card-text">{{ad.price}} THB</h3>
 									<p class = "card-text">{{ad.product}}<br>
-									<span class="badge badge-primary">{{ad.tags}}</span></p>
-									
+										{% if ad.tags == "Other Electronics" %}
+											<span class="badge badge-primary">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Laptops" %}
+											<span class="badge badge-warning">{{ad.tags}}</span></p>
+										{% elif ad.tags == "PC" %}
+											<span class="badge badge-secondary">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Tablets" %}
+											<span class="badge badge-info">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Mobiles" %}
+											<span class="badge badge-success">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Clothes" %}
+											<span class="badge badge-dark">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Automotives" %}
+											<span class="badge badge-danger">{{ad.tags}}</span></p>
+										{% elif ad.tags == "Furniture" %}
+											<span class="badge badge-light">{{ad.tags}}</span></p>
+										{% endif %}
 									<a href="{% url 'marketplace:marketplace-details' ad.slug %}" class = "btn btn-secondary btn-sm mt-1 mb-1">Details</a>
 								</div>
 							</div>

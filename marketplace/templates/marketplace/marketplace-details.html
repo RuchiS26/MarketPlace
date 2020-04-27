@@ -27,7 +27,23 @@
 						<br><small class="text-muted">{{ad.date_posted}}</small>
 						<br><br><h3 class = "card-text">{{ad.price}} THB</h3>
 						<br><p class = "card-text">{{ad.product}}
-						<span class="badge badge-primary">{{ad.tags}}</span></p>
+							{% if ad.tags == "Other Electronics" %}
+								<span class="badge badge-primary">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Laptop" %}
+								<span class="badge badge-warning">{{ad.tags}}</span></p>
+							{% elif ad.tags == "PC" %}
+								<span class="badge badge-secondary">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Tablets" %}
+								<span class="badge badge-info">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Mobiles" %}
+								<span class="badge badge-success">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Clothes" %}
+								<span class="badge badge-dark">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Automotives" %}
+								<span class="badge badge-danger">{{ad.tags}}</span></p>
+							{% elif ad.tags == "Furniture" %}
+								<span class="badge badge-light">{{ad.tags}}</span></p>
+							{% endif %}
 					</div>
 					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
 						<br><p class="justify">{{ad.description|linebreaks}}</p>
